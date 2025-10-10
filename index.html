@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>AR.js Auto-Fit Model (Stable Version)</title>
+    <title>AR.js Static Model</title>
 
     <!-- A-Frame and AR.js -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
@@ -40,11 +40,11 @@
             const box = new THREE.Box3().setFromObject(mesh);
             const center = new THREE.Vector3();
             box.getCenter(center);
-            const height = box.max.y - box.min.y;
 
-            // Move so that the base of the model rests on the marker
+            // Move so base rests on marker
             mesh.position.sub(center);
             mesh.position.y -= box.min.y;
+
             console.log('✅ Model centered and grounded on marker');
           });
         }
@@ -63,20 +63,20 @@
       <a-entity light="type: ambient; intensity: 1"></a-entity>
       <a-entity light="type: directional; intensity: 0.8" position="1 1 0"></a-entity>
 
-      <!-- Marker with smoothing for stability -->
+      <!-- Marker with smoothing for stable tracking -->
       <a-marker preset="hiro"
                 smooth="true"
                 smoothCount="10"
                 smoothTolerance="0.01"
                 smoothThreshold="5">
 
+        <!-- Static model -->
         <a-entity
-          gltf-model="./SXT1.glb"
+          gltf-model="./SXT1v2.glb"
           auto-center
           auto-resize="targetSize: 1"
           position="0 0 0"
-          rotation="0 0 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+          rotation="0 0 0">
         </a-entity>
 
       </a-marker>
