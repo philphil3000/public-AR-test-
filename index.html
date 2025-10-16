@@ -2,13 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>AR.js Static Model</title>
+    <title>AR.js Static Model (Fixed)</title>
 
-    <!-- A-Frame and AR.js (stable versions) -->
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.5/aframe/build/aframe-ar.js"></script>
+    <!-- A-Frame (stable) -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
-    <!-- Auto-center and auto-resize helpers -->
+    <!-- AR.js (working CDN link) -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.js"></script>
+
+    <!-- Auto-center and auto-resize components -->
     <script>
       AFRAME.registerComponent('auto-resize', {
         schema: { targetSize: { type: 'number', default: 1 } },
@@ -57,23 +59,26 @@
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
       <!-- Lighting -->
-      <a-entity light="type: ambient; intensity: 1"></a-entity>
-      <a-entity light="type: directional; intensity: 0.8" position="1 1 0"></a-entity>
+      <a-entity light="type: ambient; intensity: 1.0"></a-entity>
+      <a-entity light="type: directional; intensity: 1.2" position="1 1 0"></a-entity>
+      <a-entity light="type: hemisphere; intensity: 0.6"></a-entity>
 
       <!-- Marker with smoothing -->
-      <a-marker preset="hiro"
-                smooth="true"
-                smoothCount="10"
-                smoothTolerance="0.01"
-                smoothThreshold="5">
+      <a-marker
+        preset="hiro"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+      >
         <!-- Static model -->
         <a-entity
           gltf-model="./SXT1v2.glb"
           auto-center
           auto-resize="targetSize: 1"
           position="0 0 0"
-          rotation="0 0 0">
-        </a-entity>
+          rotation="0 0 0"
+        ></a-entity>
       </a-marker>
 
       <!-- Camera -->
