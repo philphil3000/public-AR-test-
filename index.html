@@ -1,87 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>AR.js Static Model (Fixed)</title>
-
-    <!-- A-Frame (stable) -->
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
-    <!-- AR.js (working CDN link) -->
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.js"></script>
-
-    <!-- Auto-center and auto-resize components -->
-    <script>
-      AFRAME.registerComponent('auto-resize', {
-        schema: { targetSize: { type: 'number', default: 1 } },
-        init: function () {
-          this.el.addEventListener('model-loaded', () => {
-            const mesh = this.el.getObject3D('mesh');
-            if (!mesh) return;
-
-            const box = new THREE.Box3().setFromObject(mesh);
-            const size = new THREE.Vector3();
-            box.getSize(size);
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = this.data.targetSize / maxDim;
-
-            this.el.object3D.scale.set(scaleFactor, scaleFactor, scaleFactor);
-            console.log(`✅ Auto-scaled model by factor: ${scaleFactor.toFixed(3)}`);
-          });
-        }
-      });
-
-      AFRAME.registerComponent('auto-center', {
-        init: function () {
-          this.el.addEventListener('model-loaded', () => {
-            const mesh = this.el.getObject3D('mesh');
-            if (!mesh) return;
-
-            const box = new THREE.Box3().setFromObject(mesh);
-            const center = new THREE.Vector3();
-            box.getCenter(center);
-
-            mesh.position.sub(center);
-            mesh.position.y -= box.min.y;
-
-            console.log('✅ Model centered and grounded on marker');
-          });
-        }
-      });
-    </script>
-  </head>
-
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene
-      embedded
-      vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true;"
-      arjs="sourceType: webcam; debugUIEnabled: false;"
-    >
-      <!-- Lighting -->
-      <a-entity light="type: ambient; intensity: 1.0"></a-entity>
-      <a-entity light="type: directional; intensity: 1.2" position="1 1 0"></a-entity>
-      <a-entity light="type: hemisphere; intensity: 0.6"></a-entity>
-
-      <!-- Marker with smoothing -->
-      <a-marker
-        preset="hiro"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <!-- Static model -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <!-- we import arjs version without NFT but with marker + location based support -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
         <a-entity
-          gltf-model="./SXT1v2.glb"
-          auto-center
-          auto-resize="targetSize: 1"
           position="0 0 0"
-          rotation="0 0 0"
+          scale="0.05 0.05 0.05"
+          gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
         ></a-entity>
       </a-marker>
-
-      <!-- Camera -->
       <a-entity camera></a-entity>
     </a-scene>
   </body>
